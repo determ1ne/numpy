@@ -266,11 +266,11 @@ class TestFlags:
         a = np.zeros(4, dtype=np.dtype([("a", "i4"), ("b", "i4")]))
         assert_(a.flags.aligned)
 
-    @pytest.mark.parametrize("row", ["1.0 " * 5, "1.0 " * (1 << 16)])
+    @pytest.mark.parametrize("row_size", [5, 1 << 16])
     @pytest.mark.parametrize("row_count", [1, 5])
     @pytest.mark.parametrize("ndmin", [0, 1, 2])
-    def test_xcontiguous_load_txt(self, row, row_count, ndmin):
-        s = io.StringIO('\n'.join([row] * row_count))
+    def test_xcontiguous_load_txt(self, row_size, row_count, ndmin):
+        s = io.StringIO('\n'.join(['1.0 ' * row_size] * row_count))
         a = np.loadtxt(s, ndmin=ndmin)
 
         assert a.flags.c_contiguous
